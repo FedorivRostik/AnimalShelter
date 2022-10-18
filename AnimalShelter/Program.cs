@@ -1,6 +1,7 @@
 using Application.Services.Configuration;
 using DataAccess;
 using DataAccess.Repositories.Configuration;
+using Host.Middlewares.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +88,7 @@ builder.Services.AddApplicationRepsitories();
 builder.Services.AddApplicationServices();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
+app.AddApplicationMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -94,9 +96,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-
 app.UseRouting();
 
 app.UseCors("frontend");

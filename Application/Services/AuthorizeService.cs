@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
 using Core.Models;
@@ -24,12 +25,12 @@ public class AuthorizeService : IAuthorizeService
         var loggedUser = await _repository.Login(userLogin);
         if (loggedUser == null)
         {
-            throw new Exception("not found");
+            throw new NotFoundException("User not found. Wrong email");
         }
 
         if (!VerifyPasswordHash(userLogin.Password, loggedUser.PasswordHash!, loggedUser.PasswordSalt!))
         {
-            throw new Exception("Wrong password");
+            throw new NotFoundException("User not found.Wrong password");
         }
 
         var claims = new[]
